@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 class Character
 {
@@ -9,25 +10,26 @@ protected:
     int basePower;
 
 public:
-    Character(string n, int bp) : name(n), basePower(bp)
+    Character(const string &n, int bp) : name(n), basePower(bp)
     {
         activeFighters++;
         cout << name << " has entered the battlefield!" << endl;
     }
-    ~Character()
+    virtual ~Character()
     {
         activeFighters--;
         cout << name << " was defeated. Fighters remaining:- " << activeFighters << endl;
     }
+    virtual void powerUp() = 0;
 };
-int Character ::activeFighters;
+int Character ::activeFighters = 0;
 class Striker : virtual public Character
 {
 protected:
     int physicalDamage;
 
 public:
-    Striker(string n, int bp, int pd) : Character(n, bp), physicalDamage(pd) {}
+    Striker(const string &n, int bp, int pd) : Character(n, bp), physicalDamage(pd) {}
     void powerUp()
     {
         physicalDamage += 500;
@@ -40,7 +42,7 @@ protected:
     int kiDamage;
 
 public:
-    KiMaster(string n, int bp, int kd) : Character(n, bp), kiDamage(kd) {}
+    KiMaster(const string &n, int bp, int kd) : Character(n, bp), kiDamage(kd) {}
     void powerUp()
     {
         kiDamage += 1000;
@@ -50,17 +52,24 @@ public:
 class ZFighter : public Striker, public KiMaster
 {
     int superSaiyanMultiplier;
+    bool isTransformed = false;
 
 public:
-    ZFighter(string n, int bp, int pd, int kd, int multiplier) : Character(n, bp), Striker(n, bp, pd), KiMaster(n, bp, kd), superSaiyanMultiplier(multiplier) {}
+    ZFighter(const string &n, int bp, int pd, int kd, int multiplier) : Character(n, bp), Striker(n, bp, pd), KiMaster(n, bp, kd), superSaiyanMultiplier(multiplier) {}
     void powerUp()
     {
+        if (isTransformed)
+        {
+            cout << "Already at full power!" << endl;
+            return;
+        }
         Striker::powerUp();
         KiMaster::powerUp();
         basePower *= superSaiyanMultiplier;
+        isTransformed = true;
         cout << "AHHHHH! Super Saiyan Transformation Complete!" << endl;
     }
-    void showStats()
+    void showStats() const
     {
         cout << "Name :- " << name
              << "\nBase Power :- " << basePower
@@ -79,6 +88,8 @@ int main()
         goku.powerUp();
         cout << endl;
         goku.showStats();
+        cout << endl;
+        goku.powerUp();
         cout << endl;
     }
     cout << endl;
