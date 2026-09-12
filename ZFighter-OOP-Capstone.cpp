@@ -8,17 +8,20 @@ class Character
 protected:
     string name;
     int basePower;
+    string exitLine;
 
 public:
-    Character(const string &n, int bp) : name(n), basePower(bp)
+    Character(const string &n, int bp, const string &exit = "")
+        : name(n), basePower(bp), exitLine(exit.empty() ? n + " was defeated." : exit)
     {
         activeFighters++;
         cout << name << " has entered the battlefield!" << endl;
     }
+
     virtual ~Character()
     {
         activeFighters--;
-        cout << name << " was defeated. Fighters remaining:- " << activeFighters << endl;
+        cout << exitLine << " Fighters remaining: " << activeFighters << endl;
     }
     virtual void powerUp() = 0;
 };
@@ -55,7 +58,7 @@ class ZFighter : public Striker, public KiMaster
     bool isTransformed = false;
 
 public:
-    ZFighter(const string &n, int bp, int pd, int kd, int multiplier) : Character(n, bp), Striker(n, bp, pd), KiMaster(n, bp, kd), superSaiyanMultiplier(multiplier) {}
+    ZFighter(const string &n, int bp, int pd, int kd, int multiplier) : Character(n, bp, n + " has transcended the battlefield... a legend never truly falls!"), Striker(n, bp, pd), KiMaster(n, bp, kd), superSaiyanMultiplier(multiplier) {}
     void powerUp()
     {
         if (isTransformed)
