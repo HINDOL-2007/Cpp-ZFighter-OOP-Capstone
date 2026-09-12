@@ -1,25 +1,22 @@
-# 🐉 C++ Z-Fighter RPG Simulator (v1.2)
+# 🐉 C++ Z-Fighter RPG Simulator (v1.3)
 
 ## 📖 About the Project
-This capstone project simulates a multi-path RPG character system, acting as a masterclass in advanced C++ Object-Oriented Programming. Version 1.2 introduces production-grade optimizations including Abstract Base Classes, reference passing, constant member functions, and transformation state management.
+This capstone project simulates a multi-path RPG character system, acting as a masterclass in advanced C++ Object-Oriented Programming. Version 1.3 introduces dynamic object lifecycle messaging, allowing derived classes to customize their deallocation outputs upon destruction.
 
-## ✨ V1.2 Architecture Upgrades
-*   **Abstract Base Class:** The grandparent `Character` class now utilizes a pure virtual function (`virtual void powerUp() = 0;`), enforcing a strict contract that all derived classes must implement their own power-up logic.
-*   **State Management:** Implemented an `isTransformed` boolean flag to prevent redundant power-scaling, ensuring the Super Saiyan multiplier can only be applied once per object lifecycle.
-*   **Memory & Performance Optimization:** 
-    *   Upgraded string parameters to use constant references (`const string &`), eliminating expensive string copy operations during instantiation.
-    *   Applied `const` correctness to getter methods (`showStats() const`) to guarantee data immutability.
-    *   Implemented a `virtual` destructor in the base class to prevent memory leaks during polymorphic deletion.
+## ✨ V1.3 Architecture Upgrades
+*   **Dynamic Destructor Messaging:** Replaced hardcoded destructor logs with a dynamic `exitLine` string, allowing different character tiers to output unique messages when they are cleared from memory.
+*   **Ternary Initialization:** Utilized a ternary operator (`exit.empty() ? ... : ...`) directly within the constructor's initialization list to elegantly handle fallback string generation without cluttering the constructor body.
+*   **Default Arguments:** Leveraged default constructor parameters (`const string &exit = ""`) to keep the base class flexible for standard entities while allowing the `ZFighter` derived class to explicitly inject a custom exit string up the virtual inheritance chain.
 
 ## 📊 Complexity Analysis
 *   **Time Complexity:** $O(1)$
-    *   All operations—including object instantiation, state checks, arithmetic scaling during `powerUp()`, and `showStats()` rendering—execute in constant time. There are no iterative loops or recursive dependencies.
+    *   All operations execute in constant time. The ternary string evaluation and memory deallocation string prints happen instantly upon object destruction.
 *   **Space / Memory Complexity:** $O(1)$
-    *   The memory footprint remains constant. The program allocates a fixed number of bytes for fundamental data types (`int`, `bool`), a `string` (optimized via SSO/reference), and underlying vtable pointers required for virtual inheritance and polymorphism. No dynamic scaling data structures are used.
+    *   Memory footprint remains constant. An additional string member (`exitLine`) is allocated per object, but the overall architecture remains strictly bounded with no infinitely scaling structures.
 
 ## 💻 Tech Stack
 *   **Language:** C++
-*   **Core Concepts:** Abstract Classes, Pure Virtual Functions, Diamond Problem Resolution, Pass-by-Reference, Const Correctness, Polymorphic Preparation.
+*   **Core Concepts:** Dynamic Destructors, Ternary Operators, Default Constructor Arguments, Abstract Classes, Diamond Problem Resolution.
 
 ## 🛠️ How to Run
 1. Clone this repository and compile:
